@@ -6,4 +6,3 @@ RUN pip install uuid
 
 RUN rm -rf /app
 ADD ./web /app
-

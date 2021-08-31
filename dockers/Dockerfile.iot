@@ -2,6 +2,9 @@ FROM python:3.6
 
 RUN pip install aiohttp
 RUN pip install requests
+RUN pip install pymongo
+RUN pip install pyyaml
+RUN pip install pytz
 
 ADD ./IoT /app
 
@@ -12,4 +15,3 @@ ENV TEST_URL http://127.0.0.1/sensor/add
 WORKDIR /app
 
 CMD [ "/bin/bash", "-c", "/app/run.sh" ]
-
