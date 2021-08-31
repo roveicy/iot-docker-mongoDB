@@ -77,6 +77,14 @@ def insert_record_mongo(r):
     m.update(r["sensor_data"].encode('utf-8'))
     dhash = m.hexdigest()[:30]
     db = get_db_mongo()
+    db.sensors.insert({
+        "device": r["dev_id"],
+        "ts": r["ts"],
+        "seq": r["seq_no"],
+        "data": r["sensor_data"][0:32],
+        "size": r["data_size"],
+        "hash": dhash
+    })
 
 
 def query_record_mongo(page):
