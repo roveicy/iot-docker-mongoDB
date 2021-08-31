@@ -10,7 +10,7 @@ docker-compose build
 10 10<br>
 <br>-- means simulating 5 sensors in 10 senconds and then 10 sensors in 10 seconds
 <br>-- You can also simulate 0 sensors to simulate sleeping.
-
+<br>-- as the second parameters means how lond the sensors should be alive in the workload, it is recommended to keep it 10 seconds for all of the experiments.
 <br>* Edit IoT/sensors.list
 <br>-- For example
 <br>temp 1
@@ -29,9 +29,10 @@ docker-compose build
 <br>3. Run
 
 <br>* Start simulation
+<br>docker-compose create
 <br>docker-compose up -d
 <br>-- then the iot container will start the simulation after 10 seconds
-
+<br>Please note that you can scale the "web" container based on the load. You might use auto-scaling policies on the web container based on your applicaiton need. This will help the workload generator to avoid crashing.
 <br>* Start auto scale
 <br>python3 auto-scale.py
 <br>-- Run "python3 auto-scale --help" to see the help information
@@ -44,6 +45,7 @@ docker-compose build
 <br>4. View the database
 <br>Access http://127.0.0.1:8081 and the database name is 'iot', the collection name is 'sensors'.
 
+
 <br>5. How
 <br>It starts a 'db' containter for database, 
 <br>one/many 'web' containers for receiving iot data and storing in the database, 
@@ -51,7 +53,7 @@ docker-compose build
 <br>and an 'iot' container for generating iot data.
 <br>Besides, it starts a 'dbmanager' for providing http://127.0.0.1:8081 for managing the database, 
 <br>a 'cadvisor' for monitoring all containers.
-
+<br>Access live monitoring by cadvisor: https://127.0.0.1:8080
 
 <br> *You can cite the following papers for this project:*
 <br>Rasolroveicy, M., & Fokaefs, M. (2020, November). Dynamic reconfiguration of consensus protocol for IoT data registry on blockchain. In Proceedings of the 30th Annual International Conference on Computer Science and Software Engineering (pp. 227-236).
