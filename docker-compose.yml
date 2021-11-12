@@ -67,4 +67,12 @@ services:
     - /var/lib/docker:/var/lib/docker:ro
     ports:
     - 8080:8080
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - dbmanager
+
     
