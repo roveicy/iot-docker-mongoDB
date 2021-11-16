@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.2'
 
 services:
   # web:
@@ -58,15 +58,36 @@ services:
   #   volumes:
   #   - ./IoT:/app/run
 
-  # cadvisor:
-  #   image: google/cadvisor:latest
-  #   volumes:
-  #   - /../:/rootfs:ro
-  #   - /var/run:/var/run:rw
-  #   - /sys:/sys:ro
-  #   - /var/lib/docker:/var/lib/docker:ro
-  #   ports:
-  #   - 8080:8080
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - redis
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+    - 6379:6379
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+    - cadvisor
 
   nginx:
     build: ./nginx
@@ -74,5 +95,6 @@ services:
       - 80:80
     depends_on:
       - dbmanager
+
 
     
