@@ -2,7 +2,7 @@
 global:
   scrape_interval:     15s
   evaluation_interval: 5s
-  scrape_timeout:     1m
+  scrape_timeout:     15s
   #query_log_file: <string>
   external_labels:
     monitor: 'codelab-monitor'
