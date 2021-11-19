@@ -103,9 +103,8 @@ services:
     volumes:
        - grafana_volume:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_USER="admin"
-      - GF_SECURITY_ADMIN_PASSWORD="test12345"
-      - GF_USERS_ALLOW_SIGN_UP="false"
+      - HTTP_USER="admin"
+      - HTTP_PASSWORD="test12345"
     ports:
       - 3000:3000
     depends_on:
