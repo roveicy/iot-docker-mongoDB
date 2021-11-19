@@ -101,10 +101,7 @@ services:
   grafana:
     image: grafana/grafana:7.3.6
     volumes:
-       - ./grafana/data/grafana:/var/lib/grafana
-       - ./grafana/conf/grafana:/etc/grafana
-       - ./grafana/logs/grafana:/var/log/grafana
-       - ./grafana/data/grafana/provisioning:/etc/grafana/provisioning
+       - grafana_volume:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER="admin"
       - GF_SECURITY_ADMIN_PASSWORD="test12345"
@@ -114,6 +111,9 @@ services:
     depends_on:
       - prometheus
       - db
+
+volumes:
+  grafana_volume:
 
 
     
