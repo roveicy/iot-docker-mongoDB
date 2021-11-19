@@ -1,20 +1,33 @@
 version: '3.2'
 
 services:
-  # web:
-    # build:
-      # context: ./dockers/
-      # dockerfile: Dockerfile.web
-    # links:
-    # - db
+  iot:
+    build:
+      context: ./dockers/
+      dockerfile: Dockerfile.iot
+    links:
+    - haproxy
+    environment:
+      TEST_URL: http://haproxy/sensor/add
+      TZ: "America/Montreal"
+    volumes:
+    - ./IoT:/app/run
 
-    # environment:
-    #   TZ: "America/Montreal"
-    #   UWSGI_CHEAPER: 0
-    #   UWSGI_PROCESSES: 1
-    #   ME_CONFIG_MONGODB_ADMINUSERNAME: root
-    #   ME_CONFIG_MONGODB_ADMINPASSWORD: password
-    # cpus: 1.0
+
+  web:
+    build:
+      context: ./dockers/
+      dockerfile: Dockerfile.web
+    links:
+    - db
+
+    environment:
+      TZ: "America/Montreal"
+      UWSGI_CHEAPER: 0
+      UWSGI_PROCESSES: 1
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+    cpus: 1.0
 
   db:
     image: mongo:3-xenial
@@ -37,27 +50,16 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
 
-  # haproxy:
-  #   image: dockercloud/haproxy:latest
-  #   links:
-  #   - web
-  #   ports:
-  #   - 8086:80
-  #   volumes:
-  #   - /var/run/docker.sock:/var/run/docker.sock
+  haproxy:
+    image: dockercloud/haproxy:latest
+    links:
+    - web
+    ports:
+    - 8086:80
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 
-  # iot:
-  #   build:
-  #     context: ./dockers/
-  #     dockerfile: Dockerfile.iot
-  #   links:
-  #   - haproxy
-  #   environment:
-  #     TEST_URL: http://haproxy/sensor/add
-  #     TZ: "America/Montreal"
-  #   volumes:
-  #   - ./IoT:/app/run
-
+  
   cadvisor:
     image: gcr.io/google-containers/cadvisor:latest
     container_name: cadvisor
