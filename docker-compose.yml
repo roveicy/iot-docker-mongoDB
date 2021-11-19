@@ -101,10 +101,10 @@ services:
   grafana:
     image: grafana/grafana:7.3.6
     volumes:
-       - $PWD/grafana/data/grafana:/var/lib/grafana
-       - $PWD/grafana/conf/grafana:/etc/grafana
-       - $PWD/grafana/logs/grafana:/var/log/grafana
-       - $PWD/grafana/data/grafana/provisioning:/etc/grafana/provisioning
+       - ./grafana/data/grafana:/var/lib/grafana
+       - ./grafana/conf/grafana:/etc/grafana
+       - ./grafana/logs/grafana:/var/log/grafana
+       - ./grafana/data/grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_SECURITY_ADMIN_USER="admin"
       - GF_SECURITY_ADMIN_PASSWORD="test12345"
