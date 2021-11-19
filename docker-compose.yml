@@ -101,10 +101,10 @@ services:
   grafana:
     image: grafana/grafana:7.3.6
     volumes:
-       - grafana_volume:/var/lib/grafana
+      - grafana_volume:/var/lib/grafana
     environment:
-      - HTTP_USER="admin"
-      - HTTP_PASSWORD="test12345"
+      - "GF_SECURITY_ADMIN_USER=admin"
+      - "GF_SECURITY_ADMIN_PASSWORD=test12345"
     ports:
       - 3000:3000
     depends_on:
