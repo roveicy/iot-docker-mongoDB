@@ -88,6 +88,7 @@ services:
     - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
     - cadvisor
+    - node_exporter
 
   nginx:
     build: ./nginx
@@ -109,7 +110,17 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
-      - db
+  
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
 
 volumes:
   grafana_volume:
