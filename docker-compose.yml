@@ -100,6 +100,15 @@ services:
 
   grafana:
     image: grafana/grafana:7.3.6
+    volumes:
+       - $PWD/grafana/data/grafana:/var/lib/grafana
+       - $PWD/grafana/conf/grafana:/etc/grafana
+       - $PWD/grafana/logs/grafana:/var/log/grafana
+       - $PWD/grafana/data/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER: admin
+      - GF_SECURITY_ADMIN_PASSWORD: test12345
+      - GF_USERS_ALLOW_SIGN_UP: "false"
     ports:
       - 3000:3000
     depends_on:
