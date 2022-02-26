@@ -20,29 +20,29 @@ gps_paths = []
 wave_data = []
 
 
-def load_gps_paths():
-    with open('gps_path.txt', 'r') as gpsfile:
-        p = csv.reader(gpsfile, delimiter='\t')
-        for row in p:
-            if len(row) >= 3:
-                r = [float(row[0]), float(row[1]), float(row[2])]
-                gps_paths.append(r)
-    L.info("GPS paths: %d rows" % len(gps_paths))
+# def load_gps_paths():
+#     with open('gps_path.txt', 'r') as gpsfile:
+#         p = csv.reader(gpsfile, delimiter='\t')
+#         for row in p:
+#             if len(row) >= 3:
+#                 r = [float(row[0]), float(row[1]), float(row[2])]
+#                 gps_paths.append(r)
+#     L.info("GPS paths: %d rows" % len(gps_paths))
 
 
-def load_wave():
-    waveFile = wave.open('asd.wav', 'rb')
-    params = waveFile.getparams()
-    # params:  (2, 2, 48000, 2880000, 'NONE', 'not compressed')
-    rate = float(params[2])
-    frames = waveFile.getnframes()
-    # number of frames aggregated in each timestamp
-    splPerTs = rate / 120
-    asdWrapLimit = int(params[3] / splPerTs)
-    for i in range(0, asdWrapLimit):
-        data = waveFile.readframes(int(splPerTs))
-        wave_data.append(data)
-    L.info("Wave data: %d flames" % len(wave_data))
+# def load_wave():
+#     waveFile = wave.open('asd.wav', 'rb')
+#     params = waveFile.getparams()
+#     # params:  (2, 2, 48000, 2880000, 'NONE', 'not compressed')
+#     rate = float(params[2])
+#     frames = waveFile.getnframes()
+#     # number of frames aggregated in each timestamp
+#     splPerTs = rate / 120
+#     asdWrapLimit = int(params[3] / splPerTs)
+#     for i in range(0, asdWrapLimit):
+#         data = waveFile.readframes(int(splPerTs))
+#         wave_data.append(data)
+#     L.info("Wave data: %d flames" % len(wave_data))
 
 
 # Load settings of sensors from path
@@ -76,116 +76,116 @@ def load_schedule_settings(path):
 
 # Generate messages from device sensor
 # ON / OFF
-def get_device_sensor_msg(sensor):
-    val = random.choice(["OFF", "ON"])
-    msg = {
-        "dev_id": str(sensor["id"]),
-        "ts": round(time.time(), 5),
-        "seq_no": sensor["seqno"],
-        "data_size": len(val),
-        "sensor_data": str(val)
-    }
-    sensor["seqno"] += 1
-    st = random.gauss(sensor["mean"], sensor["sigma"])
-    return json.dumps(msg), st
+# def get_device_sensor_msg(sensor):
+#     val = random.choice(["OFF", "ON"])
+#     msg = {
+#         "dev_id": str(sensor["id"]),
+#         "ts": round(time.time(), 5),
+#         "seq_no": sensor["seqno"],
+#         "data_size": len(val),
+#         "sensor_data": str(val)
+#     }
+#     sensor["seqno"] += 1
+#     st = random.gauss(sensor["mean"], sensor["sigma"])
+#     return json.dumps(msg), st
 
 
 # Generate messages from temperature sensor
 # the temperature value
-def get_temp_sensor_msg(sensor):
-    val = str(round(random.normalvariate(sensor["mean"], 10), 1)) + " C"
-    msg = {
-        "dev_id": str(sensor["id"]),
-        "ts": round(time.time(), 5),
-        "seq_no": sensor["seqno"],
-        "data_size": len(val),
-        "sensor_data": str(val)
-    }
-    sensor["seqno"] += 1
-    st = sensor["interval"]
-    return json.dumps(msg), st
+# def get_temp_sensor_msg(sensor):
+#     val = str(round(random.normalvariate(sensor["mean"], 10), 1)) + " C"
+#     msg = {
+#         "dev_id": str(sensor["id"]),
+#         "ts": round(time.time(), 5),
+#         "seq_no": sensor["seqno"],
+#         "data_size": len(val),
+#         "sensor_data": str(val)
+#     }
+#     sensor["seqno"] += 1
+#     st = sensor["interval"]
+#     return json.dumps(msg), st
 
 
 # Generate messages from gps sensor
 # the position value
-def get_gps_sensor_msg(sensor):
-    j = sensor["spot"]
-    val = "(%f,%f)" % (gps_paths[j][0], gps_paths[j][1])
-    msg = {
-        "dev_id": str(sensor["id"]),
-        "ts": round(time.time(), 5),
-        "seq_no": sensor["seqno"],
-        "data_size": len(val),
-        "sensor_data": str(val)
-    }
-
-    sensor["seqno"] += 1
-    if sensor["dir"]:
-        j += 1
-        if j >= len(gps_paths):
-            j = len(gps_paths) - 2
-            sensor["dir"] = False
-    else:
-        j -= 1
-        if j < 0:
-            j = 1
-            sensor["dir"] = True
-    sensor["spot"] = j
-    st = sensor["interval"]
-
-    return json.dumps(msg), st
+# def get_gps_sensor_msg(sensor):
+#     j = sensor["spot"]
+#     val = "(%f,%f)" % (gps_paths[j][0], gps_paths[j][1])
+#     msg = {
+#         "dev_id": str(sensor["id"]),
+#         "ts": round(time.time(), 5),
+#         "seq_no": sensor["seqno"],
+#         "data_size": len(val),
+#         "sensor_data": str(val)
+#     }
+#
+#     sensor["seqno"] += 1
+#     if sensor["dir"]:
+#         j += 1
+#         if j >= len(gps_paths):
+#             j = len(gps_paths) - 2
+#             sensor["dir"] = False
+#     else:
+#         j -= 1
+#         if j < 0:
+#             j = 1
+#             sensor["dir"] = True
+#     sensor["spot"] = j
+#     st = sensor["interval"]
+#
+#     return json.dumps(msg), st
 
 
 # Generate messages from camera value
 # NO_MOTION or video value
-def get_camera_sensor_msg(sensor):
-    new_motion = False
-    if sensor["motion"]:
-        fps = sensor["fps"]
-        bitrate = int(random.uniform(sensor["bitrate"] / 4, sensor["bitrate"]))
-        val = os.urandom(int(bitrate / 8 / fps))
-        st = float(1.0 / fps)
-        sensor["cur_time"] += st
-        if sensor["cur_time"] > sensor["motion_time"]:
-            new_motion = True
-    else:
-        val = "NO_MOTION"
-        st = sensor["motion_time"]
-        new_motion = True
-
-    if new_motion:
-        sensor["motion"] = (random.choice([0, 1]) == 1)
-        sensor["motion_time"] = float(random.uniform(1, 10))
-        sensor["cur_time"] = 0
-
-    msg = {
-        "dev_id": str(sensor["id"]),
-        "ts": round(time.time(), 5),
-        "seq_no": sensor["seqno"],
-        "data_size": len(val),
-        "sensor_data": str(val)
-    }
-    sensor["seqno"] += 1
-    return json.dumps(msg), st
+# def get_camera_sensor_msg(sensor):
+#     new_motion = False
+#     if sensor["motion"]:
+#         fps = sensor["fps"]
+#         bitrate = int(random.uniform(sensor["bitrate"] / 4, sensor["bitrate"]))
+#         val = os.urandom(int(bitrate / 8 / fps))
+#         st = float(1.0 / fps)
+#         sensor["cur_time"] += st
+#         if sensor["cur_time"] > sensor["motion_time"]:
+#             new_motion = True
+#     else:
+#         val = "NO_MOTION"
+#         st = sensor["motion_time"]
+#         new_motion = True
+#
+#     if new_motion:
+#         sensor["motion"] = (random.choice([0, 1]) == 1)
+#         sensor["motion_time"] = float(random.uniform(1, 10))
+#         sensor["cur_time"] = 0
+#
+#     msg = {
+#         "dev_id": str(sensor["id"]),
+#         "ts": round(time.time(), 5),
+#         "seq_no": sensor["seqno"],
+#         "data_size": len(val),
+#         "sensor_data": str(val)
+#     }
+#     sensor["seqno"] += 1
+#     return json.dumps(msg), st
 
 
 # Generate messages from ASD sensor
 # Sound value
-def get_asd_sensor_msg(sensor):
-    j = sensor["spot"]
-    val = str(wave_data[j])
-    msg = {
-        "dev_id": str(sensor["id"]),
-        "ts": round(time.time(), 5),
-        "seq_no": sensor["seqno"],
-        "data_size": len(val),
-        "sensor_data": str(val)
-    }
-    sensor["seqno"] += 1
-    st = 1 / sensor["sps"]
-    sensor["spot"] = (j + round(120 / sensor["sps"])) % len(wave_data)
-
-    return json.dumps(msg), st
+# def get_asd_sensor_msg(sensor):
+#     j = sensor["spot"]
+#     val = str(wave_data[j])
+#     msg = {
+#         "dev_id": str(sensor["id"]),
+#         "ts": round(time.time(), 5),
+#         "seq_no": sensor["seqno"],
+#         "data_size": len(val),
+#         "sensor_data": str(val)
+#     }
+#     sensor["seqno"] += 1
+#     st = 1 / sensor["sps"]
+#     sensor["spot"] = (j + round(120 / sensor["sps"])) % len(wave_data)
+#
+#     return json.dumps(msg), st
 
 
 # Initialize the sensor
