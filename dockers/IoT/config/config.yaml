@@ -1,0 +1,39 @@
+# initial waiting time in seconds
+initial-wait: 10
+
+# running schedule
+# - sensors: (int:number of sensors)
+#   time: (int:time of running mentioned sensors in seconds)
+schedule:
+  - sensors: 10
+    time: 60
+  - sensors: 5
+    time: 60
+
+# sensor configurations
+# - type: temp (temperture sensor)
+#   interval: (seconds)
+#
+# - type: device (device sensor)
+#    interval: (seconds)
+#    mean: (float: for gaussian distribution)
+# - type: gps
+#   interval: (seconds)
+# - type: camera
+#   fps: (int: frames per second)
+#   bitrate: (int: bitrate)
+# - type: asd (sound sensor)
+#   sps: (int)
+sensors:
+  - type: temp
+    interval: 1.0
+  - type: device
+    mean: 5.0
+    sigma: 1.0
+  - type: gps
+    interval: 1.0
+  - type: asd
+    sps: 24
+  - type: camera
+    fps: 15
+    bitrate: 50000
