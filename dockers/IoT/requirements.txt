@@ -1,0 +1,6 @@
+aiohttp
+requests
+pymongo
+pyyaml
+pytz
+yarl==1.7.2
