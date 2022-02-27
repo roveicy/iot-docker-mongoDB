@@ -9,15 +9,15 @@ import wave
 import asyncio
 import aiohttp
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s]: %(message)s'
-)
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s [%(levelname)s]: %(message)s'
+# )
 
-L = logging.getLogger()
+# L = logging.getLogger()
 
-gps_paths = []
-wave_data = []
+# gps_paths = []
+# wave_data = []
 
 
 # def load_gps_paths():
@@ -189,41 +189,41 @@ def load_schedule_settings(path):
 
 
 # Initialize the sensor
-def init_sensor(simulator, id, config):
-    session = aiohttp.ClientSession()
-    t = {
-        "url": simulator["url"],
-        "session": session,
-        "id": config[0] + "_" + str(id),
-        "seqno": 0
-    }
-    if config[0] == "device":
-        t["mean"] = float(config[1])
-        t["sigma"] = float(config[2])
-        t["func"] = get_device_sensor_msg
-    elif config[0] == "temp":
-        t["interval"] = float(config[1])
-        t["mean"] = random.uniform(-30, 50)
-        t["func"] = get_temp_sensor_msg
-    elif config[0] == "gps":
-        t["interval"] = float(config[1])
-        t["dir"] = True
-        t["spot"] = random.randrange(0, len(gps_paths), 1)
-        t["func"] = get_gps_sensor_msg
-    elif config[0] == "camera":
-        t["fps"] = int(config[1])
-        t["bitrate"] = int(config[2])
-        t["motion"] = (random.choice([0, 1]) == 1)
-        t["motion_time"] = float(random.uniform(1, 10))
-        t["cur_time"] = 0
-        t["func"] = get_camera_sensor_msg
-    elif config[0] == "asd":
-        t["sps"] = int(config[1])
-        t["spot"] = random.randrange(0, len(wave_data), 1)
-        t["func"] = get_asd_sensor_msg
-    else:
-        L.error("Sensor %d: No such type" % id)
-    return t
+# def init_sensor(simulator, id, config):
+#     session = aiohttp.ClientSession()
+#     t = {
+#         "url": simulator["url"],
+#         "session": session,
+#         "id": config[0] + "_" + str(id),
+#         "seqno": 0
+#     }
+#     if config[0] == "device":
+#         t["mean"] = float(config[1])
+#         t["sigma"] = float(config[2])
+#         t["func"] = get_device_sensor_msg
+#     elif config[0] == "temp":
+#         t["interval"] = float(config[1])
+#         t["mean"] = random.uniform(-30, 50)
+#         t["func"] = get_temp_sensor_msg
+#     elif config[0] == "gps":
+#         t["interval"] = float(config[1])
+#         t["dir"] = True
+#         t["spot"] = random.randrange(0, len(gps_paths), 1)
+#         t["func"] = get_gps_sensor_msg
+#     elif config[0] == "camera":
+#         t["fps"] = int(config[1])
+#         t["bitrate"] = int(config[2])
+#         t["motion"] = (random.choice([0, 1]) == 1)
+#         t["motion_time"] = float(random.uniform(1, 10))
+#         t["cur_time"] = 0
+#         t["func"] = get_camera_sensor_msg
+#     elif config[0] == "asd":
+#         t["sps"] = int(config[1])
+#         t["spot"] = random.randrange(0, len(wave_data), 1)
+#         t["func"] = get_asd_sensor_msg
+#     else:
+#         L.error("Sensor %d: No such type" % id)
+#     return t
 
 
 # Send the message to the server
@@ -330,8 +330,8 @@ def main(argv):
         L.error("Usage: %s server_url" % argv[0])
         return
 
-    load_gps_paths()
-    load_wave()
+    # load_gps_paths()
+    # load_wave()
     sensors = load_sensors_settings("run/sensors.list")
     schedules = load_schedule_settings("run/schedule.list")
     loop = asyncio.get_event_loop()
