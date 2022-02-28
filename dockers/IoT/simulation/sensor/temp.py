@@ -9,7 +9,7 @@ class TempSensor(Sensor):
 
     def __init__(self, config: dict, id_number: int):
         assert config.get('type') == 'temp', f'sensor type should be temp, got {config.get("type")}'
-        super().__init__(config, id_number)
+        super().__init__(id_number)
 
         assert is_number(config.get('interval')) and config.get('interval') > 0, \
             'temp sensor config "interval" should be a positive number'

@@ -10,7 +10,7 @@ from typing import Tuple
 import aiohttp
 import yarl
 
-from simulation.utils import is_number, get_current_time
+from simulation.utils import get_current_time
 
 logger = logging.getLogger()
 
@@ -19,7 +19,7 @@ class Sensor(abc.ABC):
     HOST_URL: yarl.URL = None
     result_queue: asyncio.Queue[RequestResult]
 
-    def __init__(self, config: dict, id_number: int):
+    def __init__(self, id_number: int):
         self._sequence_number: int = 0
         self._id: int = id_number
         self._session: aiohttp.ClientSession = aiohttp.ClientSession()

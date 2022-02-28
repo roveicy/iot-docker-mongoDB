@@ -24,7 +24,7 @@ class GPSSensor(Sensor):
         logger.info(f'GPS paths loaded: {len(cls.paths)} rows')
 
     def __init__(self, config: dict, id_number: int):
-        super().__init__(config, id_number)
+        super().__init__(id_number)
         assert config.get('type') == 'gps', f'sensor type should be gps, got {config.get("type")}'
 
         assert is_number(config.get('interval')) and config.get('interval') > 0, \

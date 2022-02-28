@@ -29,7 +29,7 @@ class ASDSensor(Sensor):
         logger.info("Wave data: %d flames" % len(cls.wave_data))
 
     def __int__(self, config: dict, id_number: int):
-        super().__init__(config, id_number)
+        super().__init__(id_number)
         assert config.get('type') == 'asd', f'sensor type should be asd, got {config.get("type")}'
 
         assert type(config.get('sps')) == int and config.get('sps') > 0, \

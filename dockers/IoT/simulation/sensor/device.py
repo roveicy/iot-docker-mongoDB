@@ -9,7 +9,7 @@ class DeviceSensor(Sensor):
 
     def __init__(self, config: dict, id_number: int):
         assert config.get('type') == 'device', f'sensor type should be device, got {config.get("type")}'
-        super().__init__(config, id_number)
+        super().__init__(id_number)
 
         assert is_number(config.get('mean')), 'device sensor config "mean" should be a number'
         self._mean: float = float(config['mean'])
