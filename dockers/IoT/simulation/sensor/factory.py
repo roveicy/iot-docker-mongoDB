@@ -1,11 +1,19 @@
 from queue import SimpleQueue
 import typing
+import pathlib
 
-from dockers.IoT.src.sensors import ASDSensor, CameraSensor, DeviceSensor, GPSSensor, Sensor, TempSensor
+from .device import DeviceSensor
+from .asd import ASDSensor
+from .camera import CameraSensor
+from .gps import GPSSensor
+from .temp import TempSensor
+from .sensor import Sensor
+
+ASSETS_PATH = pathlib.Path('./assets')
 
 
 class SensorFactory:
-    _instance = None
+    _instance: 'SensorFactory' = None
 
     _sensor_inits: typing.Dict[str, typing.Callable[[dict, int], Sensor]] = {
         'device': DeviceSensor,
@@ -15,7 +23,13 @@ class SensorFactory:
         'asd': ASDSensor
     }
 
+    @staticmethod
+    def load_assets() -> None:
+        GPSSensor.load_assets(ASSETS_PATH / 'gps_path.txt')
+        ASDSensor.load_assets(ASSETS_PATH / 'asd.wav')
+
     def __init__(self, config: dict) -> None:
+        SensorFactory.load_assets()
         self._configs_queue: SimpleQueue[dict] = SimpleQueue()
         self._last_id: int = 1
         sensor_config: dict
@@ -35,7 +49,7 @@ class SensorFactory:
             raise NotImplemented(f'no such sensor type as {sensor_type}')
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> 'SensorFactory':
         if cls._instance:
             return cls._instance
         else:

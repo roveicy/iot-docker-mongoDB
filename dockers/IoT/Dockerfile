@@ -1,17 +1,15 @@
-FROM python:3.6
+FROM python:3.9
 
-RUN pip install aiohttp
-RUN pip install requests
-RUN pip install pymongo
-RUN pip install pyyaml
-RUN pip install pytz
+WORKDIR /app
+
+COPY ./requirements.txt ./requirements.txt
+
+RUN pip install -r ./requirements.txt
 
 ADD ./IoT /app
 
 RUN chmod a+r /app/* && chmod a+rwx /app/run && chmod a+r /app/run/*
 
-ENV TEST_URL http://127.0.0.1/sensor/add
 
-WORKDIR /app
 
 CMD [ "/bin/bash", "-c", "/app/run.sh" ]

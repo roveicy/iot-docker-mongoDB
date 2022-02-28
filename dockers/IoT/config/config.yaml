@@ -1,5 +1,7 @@
-# initial waiting time in seconds
-initial-wait: 10
+# initial and end waiting time in seconds
+wait:
+  start: 10
+  end: 12
 
 # running schedule
 # - sensors: (int:number of sensors)

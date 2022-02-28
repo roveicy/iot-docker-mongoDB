@@ -9,6 +9,7 @@ import wave
 import asyncio
 import aiohttp
 
+
 # logging.basicConfig(
 #     level=logging.INFO,
 #     format='%(asctime)s [%(levelname)s]: %(message)s'
@@ -48,30 +49,30 @@ import aiohttp
 # Load settings of sensors from path
 # File format: Each line:
 # sensor_type sensor_settings
-def load_sensors_settings(path):
-    sensors = []
-    with open(path) as f:
-        for line in f.readlines():
-            ss = line.strip().split(" ")
-            if (len(ss) >= 1):
-                sensors.append(ss)
-    return sensors
+# def load_sensors_settings(path):
+#     sensors = []
+#     with open(path) as f:
+#         for line in f.readlines():
+#             ss = line.strip().split(" ")
+#             if (len(ss) >= 1):
+#                 sensors.append(ss)
+#     return sensors
 
 
 # Load settings of schedule from path
 # File format: Each line:
 # num_sensors runtime
-def load_schedule_settings(path):
-    scheds = []
-    with open(path) as f:
-        for line in f.readlines():
-            ss = line.strip().split(" ")
-            if (len(ss) == 2):
-                scheds.append((int(ss[0]), int(ss[1])))
-            # elif(len(ss) != 0):
-            #    L.warning("Schedule configs: Unsupported format: " + str(ss))
-
-    return scheds
+# def load_schedule_settings(path):
+#     scheds = []
+#     with open(path) as f:
+#         for line in f.readlines():
+#             ss = line.strip().split(" ")
+#             if (len(ss) == 2):
+#                 scheds.append((int(ss[0]), int(ss[1])))
+#             # elif(len(ss) != 0):
+#             #    L.warning("Schedule configs: Unsupported format: " + str(ss))
+#
+#     return scheds
 
 
 # Generate messages from device sensor
@@ -241,7 +242,7 @@ async def send_sensor_msg(session, url, msg):
 # Run the id-th sensor
 async def run_sensor(simulator, id, config):
     L.info("Sensor %d: Start %s" % (id, str(config)))
-    sensor = init_sensor(simulator, id, config)
+    # sensor = init_sensor(simulator, id, config)
     metrics = simulator["metrics"]
 
     while (id < simulator["cur_sensors"]):
@@ -266,19 +267,19 @@ async def run_sensor(simulator, id, config):
 
 
 # Start new sensors
-def start_sensors(simulator, new_sensors, configs):
-    num_configs = len(configs)
-    old_sensors = simulator["cur_sensors"]
-    simulator["cur_sensors"] = new_sensors
-    for i in range(old_sensors, new_sensors):
-        config = configs[i % num_configs]
-        task = simulator["loop"].create_task(run_sensor(simulator, i, config))
+# def start_sensors(simulator, new_sensors, configs):
+    # num_configs = len(configs)
+    # old_sensors = simulator["cur_sensors"]
+    # simulator["cur_sensors"] = new_sensors
+    # for i in range(old_sensors, new_sensors):
+    #     config = configs[i % num_configs]
+    #     task = simulator["loop"].create_task(run_sensor(simulator, i, config))
         # simulator["tasks"].append(task)
 
 
 # Stop current sensors
-def stop_sensors(simulator, new_sensors):
-    simulator["cur_sensors"] = new_sensors
+# def stop_sensors(simulator, new_sensors):
+    # simulator["cur_sensors"] = new_sensors
     # old_tasks = []
     # for i in range(len(simulator["tasks"]), new_sensors, -1):
     #    old_tasks.append(simulator["tasks"].pop())
@@ -305,35 +306,35 @@ async def do_statistics(simulator, interval):
                                                           simulator["cur_sensors"],
                                                           allRequests, errorRate, avgLatency))
 
-            metrics[0] = 0
-            metrics[1] = 0
-            metrics[2] = 0.0
+            metrics[0] = 0  # -> success request count
+            metrics[1] = 0  # -> sum of latency
+            metrics[2] = 0.0  # -> error request count
 
 
 # Run the scheduler
-async def run_scheduler(simulator, schedules, sensors):
-    simulator["loop"].create_task(do_statistics(simulator, 10))
-    for sched in schedules:
-        L.info("%d sensors in %d seconds" % sched)
-        if sched[0] > simulator["cur_sensors"]:
-            start_sensors(simulator, sched[0], sensors)
-        else:
-            stop_sensors(simulator, sched[0])
-        await asyncio.sleep(sched[1])
-    tasks = stop_sensors(simulator, 0)
-    simulator["running"] = False
-    await asyncio.sleep(12)
+# async def run_scheduler(simulator, schedules, sensors):
+    # simulator["loop"].create_task(do_statistics(simulator, 10))
+    # for sched in schedules:
+    #     L.info("%d sensors in %d seconds" % sched)
+    #     if sched[0] > simulator["cur_sensors"]:
+    #         start_sensors(simulator, sched[0], sensors)
+    #     else:
+    #         stop_sensors(simulator, sched[0])
+    #     await asyncio.sleep(sched[1])
+    # tasks = stop_sensors(simulator, 0)
+    # simulator["running"] = False
+    # await asyncio.sleep(12)
 
 
 def main(argv):
-    if len(argv) != 2:
-        L.error("Usage: %s server_url" % argv[0])
-        return
+    # if len(argv) != 2:
+    #     L.error("Usage: %s server_url" % argv[0])
+    #     return
 
     # load_gps_paths()
     # load_wave()
-    sensors = load_sensors_settings("run/sensors.list")
-    schedules = load_schedule_settings("run/schedule.list")
+    # sensors = load_sensors_settings("run/sensors.list")
+    # schedules = load_schedule_settings("run/schedule.list")
     loop = asyncio.get_event_loop()
     metrics = [0, 0, 0.0]
     simulator = {
