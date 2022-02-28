@@ -228,42 +228,42 @@ import aiohttp
 
 
 # Send the message to the server
-async def send_sensor_msg(session, url, msg):
-    # L.info("Url: %s, data: %s" % (url, msg))
-    headers = {'content-type': 'application/json'}
-    try:
-        async with session.post(url, data=msg, headers=headers) as resp:
-            pass
-        return True
-    except:
-        return False
+# async def send_sensor_msg(session, url, msg):
+#     # L.info("Url: %s, data: %s" % (url, msg))
+#     headers = {'content-type': 'application/json'}
+#     try:
+#         async with session.post(url, data=msg, headers=headers) as resp:
+#             pass
+#         return True
+#     except:
+#         return False
 
 
 # Run the id-th sensor
-async def run_sensor(simulator, id, config):
-    L.info("Sensor %d: Start %s" % (id, str(config)))
-    # sensor = init_sensor(simulator, id, config)
-    metrics = simulator["metrics"]
-
-    while (id < simulator["cur_sensors"]):
-        msg, st = sensor["func"](sensor)
-        # L.info("Sensor %d: Send %d bytes, Sleep %.2f" % (id, len(msg), st))
-        starttime = time.time()
-        success = await send_sensor_msg(sensor["session"], sensor["url"], msg)
-        endtime = time.time()
-
-        if success:
-            metrics[0] += 1
-            metrics[2] += endtime - starttime
-        else:
-            metrics[1] += 1
-
-        diff = st - (endtime - starttime)
-        if diff > 0:
-            await asyncio.sleep(st)
-
-    await sensor["session"].close()
-    L.info("Sensor %d: Exit" % id)
+# async def run_sensor(simulator, id, config):
+#     L.info("Sensor %d: Start %s" % (id, str(config)))
+#     # sensor = init_sensor(simulator, id, config)
+#     metrics = simulator["metrics"]
+#
+#     while (id < simulator["cur_sensors"]):
+#         msg, st = sensor["func"](sensor)
+#         # L.info("Sensor %d: Send %d bytes, Sleep %.2f" % (id, len(msg), st))
+#         starttime = time.time()
+#         success = await send_sensor_msg(sensor["session"], sensor["url"], msg)
+#         endtime = time.time()
+#
+#         if success:
+#             metrics[0] += 1
+#             metrics[2] += endtime - starttime
+#         else:
+#             metrics[1] += 1
+#
+#         diff = st - (endtime - starttime)
+#         if diff > 0:
+#             await asyncio.sleep(st)
+#
+#     await sensor["session"].close()
+#     L.info("Sensor %d: Exit" % id)
 
 
 # Start new sensors
@@ -326,7 +326,7 @@ async def do_statistics(simulator, interval):
     # await asyncio.sleep(12)
 
 
-def main(argv):
+# def main(argv):
     # if len(argv) != 2:
     #     L.error("Usage: %s server_url" % argv[0])
     #     return
@@ -335,19 +335,19 @@ def main(argv):
     # load_wave()
     # sensors = load_sensors_settings("run/sensors.list")
     # schedules = load_schedule_settings("run/schedule.list")
-    loop = asyncio.get_event_loop()
-    metrics = [0, 0, 0.0]
-    simulator = {
-        "url": argv[1],
-        "loop": loop,
-        "cur_sensors": 0,
-        "tasks": [],
-        "metrics": metrics,
-        "running": True
-    }
-    loop.run_until_complete(run_scheduler(simulator, schedules, sensors))
-    loop.close()
+    # loop = asyncio.get_event_loop()
+    # metrics = [0, 0, 0.0]
+    # simulator = {
+    #     "url": argv[1],
+    #     "loop": loop,
+    #     "cur_sensors": 0,
+    #     "tasks": [],
+    #     "metrics": metrics,
+    #     "running": True
+    # }
+    # loop.run_until_complete(run_scheduler(simulator, schedules, sensors))
+    # loop.close()
+    #
 
-
-if __name__ == "__main__":
-    main(sys.argv)
+# if __name__ == "__main__":
+#     main(sys.argv)

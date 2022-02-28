@@ -35,7 +35,8 @@ class Simulator:
 
         for config in schedule_config:
             assert type(config.get('sensors')) == int, \
-                f'number of sensors in each schedule piece configuration must be an integer, got {config.get("sensors")}'
+                f'number of sensors in each schedule piece configuration must be an integer' \
+                f', got {config.get("sensors")}'
             assert type(config.get('time')) == int, \
                 f'time of each schedule piece configuration must be an integer, got {config.get("time")}'
 
@@ -58,10 +59,8 @@ class Simulator:
             sensor: Sensor
             running_task: asyncio.Task
             sensor, running_task = self._tasks.get()
-            if not running_task.cancelled():
-                running_task.cancel()
-            del running_task
-            del sensor # we can save sensors for later use too
+            sensor.cancel()
+            # we can save sensors for later use too
         logger.info(f'{count} sensors removed.')
 
     async def run(self):
