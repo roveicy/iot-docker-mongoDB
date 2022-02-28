@@ -4,7 +4,7 @@ import dataclasses
 import datetime
 import logging
 import time
-import typing
+from .data import SensorMessage, RequestResult
 from typing import Tuple
 
 import aiohttp
@@ -15,25 +15,9 @@ from simulation.utils import is_number, get_current_time
 logger = logging.getLogger()
 
 
-@dataclasses.dataclass
-class SensorMessage:
-    dev_id: str  # device id
-    ts: float  # timestamp
-    seq_no: int  # sequence number
-    data_size: int
-    sensor_data: str
-
-
-@dataclasses.dataclass
-class RequestResult:
-    is_okay: bool
-    send_time: datetime.datetime
-    status_code: int = None
-    response_time: datetime.timedelta = None
-
-
 class Sensor(abc.ABC):
     HOST_URL: yarl.URL = None
+    result_queue: asyncio.Queue[RequestResult]
 
     def __init__(self, config: dict, id_number: int):
         self._sequence_number: int = 0
@@ -103,7 +87,7 @@ class Sensor(abc.ABC):
             st: float
             msg, st = self._get_message()
             result: RequestResult = await self._send_message(msg)
-            # todo: send result to queue
+            await Sensor.result_queue.put(result)
             diff: float = st - (time.time() - start)
             if diff > 0:
                 await asyncio.sleep(diff)
