@@ -1,3 +1,5 @@
+#default config
+
 # initial and end waiting time in seconds
 wait:
   start: 10

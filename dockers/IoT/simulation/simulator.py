@@ -26,7 +26,6 @@ class Simulator:
         self._url: yarl.URL = url
         self._loop: asyncio.AbstractEventLoop = event_loop
         self._tasks: queue.LifoQueue[Tuple[Sensor, asyncio.Task]] = queue.LifoQueue()
-        # todo: implement metrics handler (prometheus/file/message queue)
         self._running: bool = False  # todo: remove this if not necessary
         self._schedule: SimpleQueue[SchedulePiece] = SimpleQueue()
         self._sensor_factory: SensorFactory = SensorFactory.get_instance()
