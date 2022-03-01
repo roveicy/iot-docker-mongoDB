@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Tuple
 from queue import SimpleQueue
 import yarl
-from sensor import SensorFactory, Sensor
+from sensor import SensorFactory
 
 logger = logging.getLogger()
 
@@ -49,7 +49,7 @@ class Simulator:
 
     def _deploy_sensors(self, count: int):
         for i in range(count):
-            sensor: Sensor = self._sensor_factory.create()
+            sensor: 'Sensor' = self._sensor_factory.create()
             running_task: asyncio.Task = self._loop.create_task(sensor.run())
             self._tasks.put((sensor, running_task))
         logger.info(f'{count} sensors deployed.')

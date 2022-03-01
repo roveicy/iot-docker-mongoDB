@@ -6,7 +6,6 @@ import logging
 import time
 from .data import SensorMessage, RequestResult
 from typing import Tuple
-from simulation.simulator import Simulator
 
 import aiohttp
 import yarl
@@ -19,7 +18,7 @@ logger = logging.getLogger()
 class Sensor(abc.ABC):
     HOST_URL: yarl.URL = None
     result_queue: asyncio.Queue[RequestResult]
-    simulator: Simulator
+    simulator: 'Simulator'
 
     def __init__(self, id_number: int):
         self._sequence_number: int = 0
@@ -79,7 +78,7 @@ class Sensor(abc.ABC):
                 return RequestResult(is_okay, start, Sensor.simulator.current_sensors, status_code, response_time)
 
         except aiohttp.ClientError:
-            return RequestResult(False, start)
+            return RequestResult(False, start, Sensor.simulator.current_sensors)
 
     async def run(self) -> None:
         logger.info(f"Sensor {self._id}: start.")

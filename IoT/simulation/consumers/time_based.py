@@ -3,11 +3,11 @@ import asyncio
 import datetime
 from abc import ABC
 
-from .consumer import ResultConsumer
+from .consumer import MetricGenerator
 from ..sensor.data import RequestResult
 
 
-class TimeBasedMetricsGenerator(ResultConsumer, ABC):
+class TimeBasedMetricsGenerator(MetricGenerator, ABC):
     """
     produces metrics every one minute
     # todo: generalize 'one minute' to every timedelta

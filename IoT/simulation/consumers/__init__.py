@@ -1,1 +1,1 @@
-from .consumer import MetricConsumer
+from .consumer import MetricGenerator

@@ -5,6 +5,12 @@ wait:
   start: 10
   end: 12
 
+
+# method
+metrics:
+  method: "file"
+  path: "./run/metrics.csv"
+
 # running schedule
 # - sensors: (int:number of sensors)
 #   time: (int:time of running mentioned sensors in seconds)
