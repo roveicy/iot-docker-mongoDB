@@ -15,5 +15,6 @@ class SensorMessage:
 class RequestResult:
     is_okay: bool
     send_time: datetime.datetime
+    current_sensor_count: int
     status_code: int = None
     response_time: datetime.timedelta = None

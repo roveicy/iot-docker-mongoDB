@@ -36,6 +36,7 @@ def main() -> None:
     event_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     assert total_config.get('schedule'), 'config file should contain schedule configurations with "schedule" as key'
     simulator: Simulator = Simulator(host_url, event_loop, total_config.get('schedule'))
+    Sensor.simulator = simulator
 
     assert total_config.get('wait'), 'waiting times should be specified in configuration with "wait" as key'
     waiting_times = total_config.get('wait')

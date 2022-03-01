@@ -18,6 +18,7 @@ class SchedulePiece:
 
 
 class Simulator:
+
     def __init__(self, url: yarl.URL, event_loop: asyncio.AbstractEventLoop, schedule_config: dict):
         """
         :param url: backend host url
@@ -40,9 +41,10 @@ class Simulator:
                 f'time of each schedule piece configuration must be an integer, got {config.get("time")}'
 
             self._schedule.put(SchedulePiece(config['sensors'], config['time']))
+        Simulator._instance = self
 
     @property
-    def _current_sensors(self) -> int:
+    def current_sensors(self) -> int:
         return self._tasks.qsize()
 
     def _deploy_sensors(self, count: int):
@@ -72,15 +74,15 @@ class Simulator:
             piece: SchedulePiece = self._schedule.get()
             logger.info(f"Schedule {i}: [sensors:{piece.sensors_count}, time:{piece.time}]")
 
-            if self._current_sensors < piece.sensors_count:
-                self._deploy_sensors(piece.sensors_count - self._current_sensors)
-            elif self._current_sensors > piece.sensors_count:
-                self._remove_sensors(self._current_sensors - piece.sensors_count)
+            if self.current_sensors < piece.sensors_count:
+                self._deploy_sensors(piece.sensors_count - self.current_sensors)
+            elif self.current_sensors > piece.sensors_count:
+                self._remove_sensors(self.current_sensors - piece.sensors_count)
 
-            logger.info(f"Schedule {i}: [current_sensors:{self._current_sensors}]")
+            logger.info(f"Schedule {i}: [current_sensors:{self.current_sensors}]")
 
             wait_time: float = piece.time - (time.time() - start_time)
             await asyncio.sleep(wait_time)
-        self._remove_sensors(self._current_sensors)
+        self._remove_sensors(self.current_sensors)
         self._running = False
         logger.info("Simulator stopped.")
