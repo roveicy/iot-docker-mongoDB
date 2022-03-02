@@ -12,4 +12,4 @@ RUN chmod a+r /app/* && chmod a+rwx /app/run && chmod a+r /app/run/*
 
 
 
-CMD [ "/bin/bash", "-c", "/app/run.sh" ]
+CMD [ "python",  "simulation/main.py"]
