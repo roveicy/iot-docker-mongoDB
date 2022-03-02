@@ -1,3 +1,4 @@
-pymongo
-requests
-uuid
+pymongo==4.0.1
+requests==2.27.1
+uuid==1.30
+flask==2.0.3
