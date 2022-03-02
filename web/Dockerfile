@@ -1,8 +1,12 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.7
-
-RUN pip install pymongo
-RUN pip install requests
-RUN pip install uuid
-
 RUN rm -rf /app
-ADD ./web /app
+
+RUN mkdir "/app"
+
+WORKDIR /app
+
+COPY ./requirements.txt ./requirements.txt
+
+RUN pip install -r ./requirements.txt
+
+ADD ./ /app

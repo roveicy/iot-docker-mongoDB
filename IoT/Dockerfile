@@ -6,7 +6,7 @@ COPY ./requirements.txt ./requirements.txt
 
 RUN pip install -r ./requirements.txt
 
-ADD ./IoT /app
+ADD ./ /app
 
 RUN chmod a+r /app/* && chmod a+rwx /app/run && chmod a+r /app/run/*
 
