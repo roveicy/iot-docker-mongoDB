@@ -2,8 +2,6 @@ name: publish_web
 
 on:
   push:
-    branches:
-      - refactor
     paths:
       - 'web/**'
 
