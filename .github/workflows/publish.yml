@@ -37,7 +37,7 @@ jobs:
           CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Build Image
-        run: docker build ./IoT/ --tag ghcr.io/nimaafshar/workload-generator-IoT:latest
+        run: docker build ./IoT/ --tag ghcr.io/nimaafshar/workload-generator-iot:latest
 
       - name: Push Image
         run: docker push ghcr.io/nimaafshar/workload-generator-IoT:latest
