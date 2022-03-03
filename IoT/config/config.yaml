@@ -9,7 +9,6 @@ wait:
 # method
 metrics:
   method: "file"
-  path: "./run/metrics.csv"
 
 # running schedule
 # - sensors: (int:number of sensors)

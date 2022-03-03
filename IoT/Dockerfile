@@ -8,10 +8,8 @@ RUN pip install -r ./requirements.txt
 
 ADD ./ /app
 
-RUN mkdir "/app/run"
+RUN mkdir "/app/run/"
 
-RUN chmod a+r /app/* && chmod a+rwx /app/run && chmod a+r /app/run/*
+RUN chmod a+rwx "/app/run/"
 
-
-
-CMD [ "python",  "simulation/main.py"]
+CMD [ "python",  "./simulation/main.py"]

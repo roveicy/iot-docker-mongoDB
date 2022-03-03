@@ -53,8 +53,7 @@ async def main() -> None:
 
     metric_generator: MetricGenerator
     if total_config['metrics']['method'] == 'file':
-        assert total_config['metrics'].get('path'), 'you should specify filepath in metrics config'
-        output_file_path: pathlib.Path = pathlib.Path(total_config['metrics']['path'])
+        output_file_path: pathlib.Path = pathlib.Path('../run/metrics.csv')
         metric_generator = FileMetricGenerator(Sensor.result_queue, output_file_path)
     else:
         raise NotImplementedError(f'metric generation method {total_config["metric"]["method"]} not supported.')
