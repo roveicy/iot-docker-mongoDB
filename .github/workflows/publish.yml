@@ -19,10 +19,10 @@ jobs:
           CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Build Image
-        run: docker build ./web/ --tag ghcr.io/nimaafshar/WG-web:latest
+        run: docker build ./web/ --tag ghcr.io/nimaafshar/workload-generator-web:latest
 
       - name: Push Image
-        run: docker push ghcr.io/nimaafshar/WG-web:latest
+        run: docker push ghcr.io/nimaafshar/workload-generator-web:latest
 
   publish-iot-image:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
           CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Build Image
-        run: docker build ./IoT/ --tag ghcr.io/nimaafshar/WG-IoT:latest
+        run: docker build ./IoT/ --tag ghcr.io/nimaafshar/workload-generator-IoT:latest
 
       - name: Push Image
-        run: docker push ghcr.io/nimaafshar/WG-IoT:latest
+        run: docker push ghcr.io/nimaafshar/workload-generator-IoT:latest
