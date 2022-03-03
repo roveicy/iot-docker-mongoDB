@@ -2,8 +2,8 @@ name: publish_web
 
 on:
   push:
-    paths:
-      - 'web/**'
+    branches:
+      - refactor
 
 jobs:
   publish-backend-image:
