@@ -1,0 +1,27 @@
+name: publish_web
+
+on:
+  push:
+    branches:
+      - refactor
+    paths:
+      - 'web/**'
+
+jobs:
+  publish-backend-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: login to github CR
+        run: |
+          echo $CR_PAT | docker login ghcr.io -u nimaafshar --password-stdin
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+
+      - name: Build Image
+        run: docker build ./web/ --tag ghcr.io/nimaafshar/workload-generator-web:latest
+
+      - name: Push Image
+        run: docker push ghcr.io/nimaafshar/workload-generator-web:latest

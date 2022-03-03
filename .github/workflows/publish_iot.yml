@@ -1,0 +1,26 @@
+name: publish_iot
+
+on:
+  push:
+    branches:
+      - refactor
+    paths:
+      - 'IoT/**'
+jobs:
+  publish-iot-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: login to github CR
+        run: |
+          echo $CR_PAT | docker login ghcr.io -u nimaafshar --password-stdin
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+
+      - name: Build Image
+        run: docker build ./IoT/ --tag ghcr.io/nimaafshar/workload-generator-iot:latest
+
+      - name: Push Image
+        run: docker push ghcr.io/nimaafshar/workload-generator-iot:latest
