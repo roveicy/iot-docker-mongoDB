@@ -1,0 +1,263 @@
+wait:
+  start: 10
+  end: 12
+
+sensors:
+  - type: temp
+    interval: 1.0
+  - type: device
+    mean: 5.0
+    sigma: 1.0
+  - type: gps
+    interval: 2.0
+  - type: asd
+      sps: 5
+  - type: camera
+      fps: 15
+      bitrate: 50000
+
+metrics:
+  method: "file"
+
+
+schedule:
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 20
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 10
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 30
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 60
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 90
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 70
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 100
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 80
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 50
+      time: 10
+  - sensors: 15
+      time: 10
+  - sensors: 15
+      time: 10
+  - sensors: 15
+      time: 10
+  - sensors: 15
+      time: 10
+  - sensors: 15
+      time: 10
+  - sensors: 15
+      time: 10
