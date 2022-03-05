@@ -19,6 +19,18 @@ logging.basicConfig(
 
 logger: logging.Logger = logging.getLogger()
 
+import os
+
+
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}/'.format(indent, os.path.basename(root)))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}'.format(subindent, f))
+
 
 async def main() -> None:
     """
@@ -29,6 +41,7 @@ async def main() -> None:
     logger.info(f"web host url is: {host_url}")
     Sensor.HOST_URL = host_url
 
+    list_files(os.getcwd())
     with open('../config/config.yaml', 'r') as config_file:
         total_config: dict = yaml.load(config_file, Loader=yaml.SafeLoader)
     logger.info('configuration loaded.')
