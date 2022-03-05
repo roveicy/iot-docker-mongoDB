@@ -2,10 +2,10 @@ name: publish_web
 
 on:
   push:
-#    branches:
-#      - refactor #fix later
-    paths:
-      - 'web/'
+    branches:
+      - refactor
+#    paths:#fix later
+#      - 'web/'
 jobs:
   publish-backend-image:
     runs-on: ubuntu-latest
