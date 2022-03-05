@@ -2,8 +2,8 @@ name: publish_iot
 
 on:
   push:
-    branches:
-      - refactor
+#    branches:
+#      - refactor #todo: fix later
     paths:
       - 'IoT/'
 jobs:
