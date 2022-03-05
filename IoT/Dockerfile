@@ -12,4 +12,4 @@ RUN mkdir "/app/run/"
 
 RUN chmod a+rwx "/app/run/"
 
-CMD [ "python",  "./simulation/main.py"]
+CMD [ "python",  "/app/main.py"]
