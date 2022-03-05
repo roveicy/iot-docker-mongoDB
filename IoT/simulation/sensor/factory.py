@@ -9,7 +9,7 @@ from .temp import TempSensor
 from .sensor import Sensor
 from .asd import ASDSensor
 
-ASSETS_PATH = pathlib.Path('../assets')
+ASSETS_PATH = pathlib.Path('assets')
 
 
 class SensorFactory:
