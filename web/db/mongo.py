@@ -4,7 +4,7 @@ import os
 import typing
 
 import pymongo
-from pymongo.errors import PyMongoError
+from pymongo.errors import PyMongoError, ConnectionFailure
 from pymongo import MongoClient
 
 from .db import DBManager
@@ -16,7 +16,14 @@ class MongoManager(DBManager):
     def __init__(self):
         user: str = os.environ.get("WEB_WORKLOAD_CONFIG_MONGODB_USERNAME")
         password: str = os.environ.get("WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD")
-        self._client: pymongo.MongoClient = MongoClient(f"mongodb://{user}:{password}@db:27017/")
+        self._client: pymongo.MongoClient = MongoClient(f"mongodb://{user}:{password}@db:27017/",
+                                                        serverSelectionTimeoutMS=500)
+        try:
+            # The ismaster command is cheap and does not require auth.
+            self._client.admin.command('ismaster')
+        except ConnectionFailure as e:
+            logger.error("server not available")
+            raise e
         self._db = self._client.iot
         self._collection = self._db.sensors
 
@@ -35,7 +42,8 @@ class MongoManager(DBManager):
                 "hash": record['hash']
             })
             return True
-        except PyMongoError:
+        except PyMongoError as e:
+            logger.error(e)
             return False
 
     def query(self, page: int) -> typing.Union[typing.List[dict], None]:
@@ -44,5 +52,6 @@ class MongoManager(DBManager):
             for r in self._collection.find().limit(10).skip(page * 10):
                 records.append(r)
             return records
-        except PyMongoError:
+        except PyMongoError as e:
+            logger.error(e)
             return None

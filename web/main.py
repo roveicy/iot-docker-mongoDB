@@ -1,3 +1,4 @@
+import logging
 import typing
 
 from flask import Flask, request, jsonify, g
@@ -8,6 +9,11 @@ from db import MongoManager, DBManager
 
 app = Flask(__name__)
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s]: %(message)s'
+)
+
 
 @app.route("/sensor/add", methods=['POST'])
 def add_sensor_record():
@@ -16,7 +22,7 @@ def add_sensor_record():
     m.update(record["sensor_data"].encode('utf-8'))
     record['hash'] = m.hexdigest()[:30]
 
-    status: bool = g.dbmanager.insert(record)
+    status: bool = app.dbmanager.insert(record)
     if status:
         return jsonify({"status": status}), 201
     else:
@@ -25,7 +31,7 @@ def add_sensor_record():
 
 @app.route("/sensor/query/<int:page>")
 def query_sensor_record(page):
-    result: typing.Union[typing.List[dict], None] = g.dbmanager.query(page)
+    result: typing.Union[typing.List[dict], None] = app.dbmanager.query(page)
     if result:
         return jsonify(result), 200
     else:
@@ -33,6 +39,6 @@ def query_sensor_record(page):
 
 
 if __name__ == "__main__":
-    g.dbmanager = MongoManager()
+    app.dbmanager = MongoManager()
     # Only for debugging while developing
     app.run(host="0.0.0.0", debug=False, port=80)
