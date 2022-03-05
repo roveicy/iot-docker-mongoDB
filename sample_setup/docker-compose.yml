@@ -1,8 +1,9 @@
-version: '3.2'
+version: '3.7'
 
 services:
   web:
     image: ghcr.io/nimaafshar/workload-generator-web:latest
+    pull_policy: always
     depends_on:
       - db
     environment:
@@ -20,6 +21,7 @@ services:
 
   iot:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
+    pull_policy: always
     depends_on:
       - web
       - haproxy
