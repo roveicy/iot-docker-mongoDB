@@ -9,12 +9,14 @@ services:
       TZ: "America/Montreal"
       UWSGI_CHEAPER: 0
       UWSGI_PROCESSES: 1
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      WEB_WORKLOAD_CONFIG_MONGODB_USERNAME: root
+      WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
     deploy:
       resources:
         limits:
           cpus: 1.0
+    sysctls:
+      net.core.somaxconn: 30000
 
   iot:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
@@ -91,7 +93,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - cadvisor
-#      - node-exporter
+  #      - node-exporter
 
   nginx:
     build: ./nginx
@@ -113,7 +115,7 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-  
+
 #  node-exporter:
 #    image: prom/node-exporter:latest
 #    container_name: node-exporter
