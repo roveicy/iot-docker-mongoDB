@@ -24,7 +24,7 @@ services:
       - web
       - haproxy
     environment:
-      TEST_URL: http://haproxy/sensor/add
+      HOST_URL: http://haproxy/sensor/add
       TZ: "America/Montreal"
     volumes:
       - ./config/iot/:/app/config/  # replace the config file
