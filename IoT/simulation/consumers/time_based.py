@@ -39,7 +39,8 @@ class TimeBasedMetricsGenerator(MetricGenerator, ABC):
     async def _flush(self):
         time: datetime.datetime = self._last_sending_timestamp
         err_rate: float = 1 - self._succeeded_requests / self._total_requests
-        avg_response_time: float = self._cumulative_response_time / self._succeeded_requests
+        avg_response_time: float = (self._cumulative_response_time / self._succeeded_requests) \
+            if self._succeeded_requests else None
         # response time is only available for succeeded requests
         avg_sensors: float = self._cumulative_sensor_count / self._total_requests
         await self._send_metrics(time, avg_sensors, self._total_requests, err_rate, avg_response_time)

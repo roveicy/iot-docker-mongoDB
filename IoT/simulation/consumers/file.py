@@ -32,5 +32,6 @@ class FileMetricGenerator(TimeBasedMetricsGenerator):
 
     async def _send_metrics(self, time: datetime.datetime, avg_sensors: float, total_requests: int, err_rate: float,
                             avg_response_time: float):
+        response_time_str: str = f'{avg_response_time:2f}' if avg_response_time else 'NaN'
         self._output_file.write(
-            f'{time.strftime("%H:%M:%S")},{avg_sensors:.2f},{self._total_requests},{err_rate:.2f},{avg_response_time:.2f}\n')
+            f'{time.strftime("%H:%M:%S")},{avg_sensors:.2f},{self._total_requests},{err_rate:.2f},{response_time_str}\n')

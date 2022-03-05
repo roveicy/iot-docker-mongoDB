@@ -81,7 +81,7 @@ class Sensor(abc.ABC):
             return RequestResult(False, start, Sensor.simulator.current_sensors)
 
     async def run(self) -> None:
-        logger.info(f"Sensor {self._id}: start.")
+        logger.info(f"Sensor {self.id}: start.")
         while not self._cancel:
             start: float = time.time()
             msg: SensorMessage
@@ -94,4 +94,4 @@ class Sensor(abc.ABC):
                 await asyncio.sleep(diff)
 
         await self._session.close()
-        logger.info(f"Sensor {self._id}: stop.")
+        logger.info(f"Sensor {self.id}: stop.")

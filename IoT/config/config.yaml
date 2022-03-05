@@ -15,9 +15,9 @@ metrics:
 #   time: (int:time of running mentioned sensors in seconds)
 schedule:
   - sensors: 10
-    time: 10
+    time: 70
   - sensors: 5
-    time: 10
+    time: 70
 
 # sensor configurations
 # - type: temp (temperture sensor)
