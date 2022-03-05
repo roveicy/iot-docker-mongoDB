@@ -11,7 +11,7 @@ sensors:
   - type: gps
     interval: 2.0
   - type: asd
-      sps: 5
+    sps: 5
   - type: camera
       fps: 15
       bitrate: 50000
