@@ -35,3 +35,5 @@ class FileMetricGenerator(TimeBasedMetricsGenerator):
         response_time_str: str = f'{avg_response_time:2f}' if avg_response_time else 'NaN'
         self._output_file.write(
             f'{time.strftime("%H:%M:%S")},{avg_sensors:.2f},{self._total_requests},{err_rate:.2f},{response_time_str}\n')
+        self._output_file.flush()
+        logger.info("results flushed.")
