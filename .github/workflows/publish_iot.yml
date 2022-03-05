@@ -4,23 +4,29 @@ on:
   push:
     branches:
       - refactor
-#    paths:#todo: fix later
-#      - 'IoT/'
 jobs:
   publish-iot-image:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - 'IoT/**'
 
       - name: login to github CR
+        if: steps.changes.outputs.IoT == 'true'
         run: |
           echo $CR_PAT | docker login ghcr.io -u nimaafshar --password-stdin
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Build Image
+        if: steps.changes.outputs.IoT == 'true'
         run: docker build ./IoT/ --tag ghcr.io/nimaafshar/workload-generator-iot:latest
 
       - name: Push Image
+        if: steps.changes.outputs.IoT == 'true'
         run: docker push ghcr.io/nimaafshar/workload-generator-iot:latest
