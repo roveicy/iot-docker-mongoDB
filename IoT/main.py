@@ -42,7 +42,7 @@ async def main() -> None:
     Sensor.HOST_URL = host_url
 
     list_files(os.getcwd())
-    with open('../config/config.yaml', 'r') as config_file:
+    with open('config/config.yaml', 'r') as config_file:
         total_config: dict = yaml.load(config_file, Loader=yaml.SafeLoader)
     logger.info('configuration loaded.')
 
