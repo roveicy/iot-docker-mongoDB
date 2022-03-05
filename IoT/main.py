@@ -13,7 +13,7 @@ import yarl
 import os
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s]: %(message)s'
 )
 
@@ -29,7 +29,7 @@ async def main() -> None:
     logger.info(f"web host url is: {host_url}")
     Sensor.HOST_URL = host_url
 
-    with open('config/config.yaml', 'r') as config_file:
+    with open('../config/config.yaml', 'r') as config_file:
         total_config: dict = yaml.load(config_file, Loader=yaml.SafeLoader)
     logger.info('configuration loaded.')
 
@@ -60,11 +60,12 @@ async def main() -> None:
 
     time.sleep(waiting_times.get('start'))
     logger.info("starting simulation")
-    # producers
-    simulation_task: asyncio.Task = event_loop.create_task(simulator.run())
 
     # consumers
     metric_generation: asyncio.Task = event_loop.create_task(metric_generator.consume())
+
+    # producers
+    simulation_task: asyncio.Task = event_loop.create_task(simulator.run())
 
     # wait for simulation to complete
     await asyncio.gather(simulation_task)

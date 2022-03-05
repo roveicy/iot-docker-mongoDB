@@ -2,11 +2,12 @@ import asyncio
 import logging
 import queue
 import time
+import typing
 from dataclasses import dataclass
 from typing import Tuple
 from queue import SimpleQueue
 import yarl
-from sensor import SensorFactory
+from .sensor import SensorFactory
 
 logger = logging.getLogger()
 
@@ -26,7 +27,8 @@ class Simulator:
         """
         self._url: yarl.URL = url
         self._loop: asyncio.AbstractEventLoop = event_loop
-        self._tasks: queue.LifoQueue[Tuple[Sensor, asyncio.Task]] = queue.LifoQueue()
+        self._tasks: typing.List[asyncio.Task] = []
+        self._sensors: queue.LifoQueue['Sensor'] = queue.LifoQueue()
         self._running: bool = False  # todo: remove this if not necessary
         self._schedule: SimpleQueue[SchedulePiece] = SimpleQueue()
         self._sensor_factory: SensorFactory = SensorFactory.get_instance()
@@ -45,24 +47,25 @@ class Simulator:
 
     @property
     def current_sensors(self) -> int:
-        return self._tasks.qsize()
+        return self._sensors.qsize()
 
     def _deploy_sensors(self, count: int):
         for i in range(count):
             sensor: 'Sensor' = self._sensor_factory.create()
             running_task: asyncio.Task = self._loop.create_task(sensor.run())
-            self._tasks.put((sensor, running_task))
+            self._tasks.append(running_task)
+            self._sensors.put(sensor)
         logger.info(f'{count} sensors deployed.')
 
     def _remove_sensors(self, count: int):
-        assert count <= self._tasks.qsize(), f'trying to remove {count} sensors, only {self._tasks.qsize()} available.'
+        assert count <= self.current_sensors, f'trying to remove {count} sensors, only {self.current_sensors} available.'
         for i in range(count):
-            sensor: Sensor
+            sensor: 'Sensor'
             running_task: asyncio.Task
-            sensor, running_task = self._tasks.get()
+            sensor = self._sensors.get()
             sensor.cancel()
             # we can save sensors for later use too
-        logger.info(f'{count} sensors removed.')
+        logger.info(f'{count} sensors shutting down...')
 
     async def run(self):
         logger.info("Simulator started.")
@@ -85,4 +88,5 @@ class Simulator:
             await asyncio.sleep(wait_time)
         self._remove_sensors(self.current_sensors)
         self._running = False
+        await asyncio.gather(*self._tasks)
         logger.info("Simulator stopped.")

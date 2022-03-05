@@ -15,7 +15,7 @@ class MetricGenerator(abc.ABC):
         pass
 
     @abc.abstractmethod
-    async def _warmup(self):
+    def _warmup(self):
         pass
 
     @abc.abstractmethod
@@ -31,7 +31,7 @@ class MetricGenerator(abc.ABC):
         pass
 
     async def consume(self):
-        await self._warmup()
+        self._warmup()
         while True:
             msg: RequestResult = await self._queue.get()
             if self._batch_done(msg):

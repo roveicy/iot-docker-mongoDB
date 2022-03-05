@@ -32,14 +32,15 @@ class TimeBasedMetricsGenerator(MetricGenerator, ABC):
     def _process_message(self, msg: RequestResult):
         self._total_requests += 1
         self._succeeded_requests += msg.is_okay
-        self._cumulative_response_time += msg.response_time
+        self._cumulative_response_time += msg.response_time if msg.response_time else 0
         self._cumulative_sensor_count += msg.current_sensor_count
         self._last_sending_timestamp = msg.send_time
 
     async def _flush(self):
         time: datetime.datetime = self._last_sending_timestamp
         err_rate: float = 1 - self._succeeded_requests / self._total_requests
-        avg_response_time: float = self._cumulative_response_time / self._total_requests
+        avg_response_time: float = self._cumulative_response_time / self._succeeded_requests
+        # response time is only available for succeeded requests
         avg_sensors: float = self._cumulative_sensor_count / self._total_requests
         await self._send_metrics(time, avg_sensors, self._total_requests, err_rate, avg_response_time)
         self._total_requests = 0

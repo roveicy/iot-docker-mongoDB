@@ -9,7 +9,8 @@ from .sensor import Sensor
 class CameraSensor(Sensor):
     _type: str = 'camera'
 
-    def __int__(self, config: dict, id_number: int):
+    def __init__(self, config: dict,
+                 id_number: int):
         super().__init__(id_number)
         assert config.get('type') == 'camera', f'sensor type should be camera, got {config.get("type")}'
 

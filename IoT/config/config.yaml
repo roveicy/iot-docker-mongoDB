@@ -2,8 +2,8 @@
 
 # initial and end waiting time in seconds
 wait:
-  start: 10
-  end: 12
+  start: 3
+  end: 3
 
 
 # method
@@ -15,9 +15,9 @@ metrics:
 #   time: (int:time of running mentioned sensors in seconds)
 schedule:
   - sensors: 10
-    time: 60
+    time: 10
   - sensors: 5
-    time: 60
+    time: 10
 
 # sensor configurations
 # - type: temp (temperture sensor)
