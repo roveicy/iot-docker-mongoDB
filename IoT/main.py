@@ -14,7 +14,7 @@ import yarl
 import os
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=int(os.environ.get("IOT_LOG_LEVEL")),
     format='%(asctime)s [%(levelname)s]: %(message)s'
 )
 
