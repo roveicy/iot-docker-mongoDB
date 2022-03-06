@@ -75,9 +75,12 @@ class Sensor(abc.ABC):
                 response_time: datetime.timedelta = end - start
                 status_code: int = response.status
                 is_okay: bool = (200 <= status_code < 300)
+                if not is_okay:
+                    logger.debug(f"INVALID RESPONSE: [status: {status_code},content: {response.content}]")
                 return RequestResult(is_okay, start, Sensor.simulator.current_sensors, status_code, response_time)
 
-        except aiohttp.ClientError:
+        except aiohttp.ClientError as e:
+            logger.debug(f"CLIENT ERROR: {e}")
             return RequestResult(False, start, Sensor.simulator.current_sensors)
 
     async def run(self) -> None:
