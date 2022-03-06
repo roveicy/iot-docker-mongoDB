@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - refactor
-#    paths:#fix later
-#      - 'web/'
+    paths:
+      - 'web/**'
 jobs:
   publish-backend-image:
     runs-on: ubuntu-latest
