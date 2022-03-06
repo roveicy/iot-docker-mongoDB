@@ -16,9 +16,8 @@ COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY . /code/app
+COPY . /code
 
+EXPOSE 5000
 
-EXPOSE 80
-
-CMD ["gunicorn", "--conf", "app/gunicorn_conf.py", "--bind", "0.0.0.0:80", "app.main:app"]
+CMD ["gunicorn", "--conf", "/code/app/gunicorn_conf.py", "--bind", "0.0.0.0:5000", "app.main:app"]
