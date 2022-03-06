@@ -1,17 +1,17 @@
 version: '3.7'
 
 services:
-#  web:
-#    image: ghcr.io/nimaafshar/workload-generator-web:latest
-#    pull_policy: always
-#    depends_on:
-#      - db
-#    environment:
-#      TZ: "America/Montreal"
-#      UWSGI_CHEAPER: 0
-#      UWSGI_PROCESSES: 1
-#      WEB_WORKLOAD_CONFIG_MONGODB_USERNAME: root
-#      WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
+  web:
+    image: ghcr.io/nimaafshar/workload-generator-web:latest
+    pull_policy: always
+    depends_on:
+      - db
+    environment:
+      TZ: "America/Montreal"
+      UWSGI_CHEAPER: 0
+      UWSGI_PROCESSES: 1
+      WEB_WORKLOAD_CONFIG_MONGODB_USERNAME: root
+      WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
 #    deploy:
 #      resources:
 #        limits:
@@ -29,19 +29,15 @@ services:
       - ./config/iot/:/app/config/  # replace the config file
       - ./iot_results/:/app/run/    # see results
 
-
-
-
-
-#  db:
-#    image: mongo:3-xenial
-#    ports:
-#      - "27017:27017" # todo: find out why this exists
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: password
-#    volumes:
-#      - ~/mongodata/:/data/db:rw
+  db:
+    image: mongo:3-xenial
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ~/mongodata/:/data/db:rw
 #
 #  dbmanager:
 #    image: mongo-express
