@@ -1,7 +1,7 @@
 import logging
 import typing
 
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify
 import json
 import hashlib
 
@@ -39,6 +39,6 @@ def query_sensor_record(page):
 
 
 if __name__ == "__main__":
-    app.dbmanager = MongoManager()
+    app.dbmanager: DBManager = MongoManager()
     # Only for debugging while developing
     app.run(host="0.0.0.0", debug=False, port=80)
