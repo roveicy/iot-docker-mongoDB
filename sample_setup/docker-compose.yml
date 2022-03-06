@@ -10,10 +10,10 @@ services:
       net.core.somaxconn: 30000
     environment:
       TZ: "America/Montreal"
-      UWSGI_CHEAPER: 0
-      UWSGI_PROCESSES: 1
       WEB_WORKLOAD_CONFIG_MONGODB_USERNAME: root
       WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
+#      UWSGI_CHEAPER: 0
+#      UWSGI_PROCESSES: 1
   #    deploy:
   #      resources:
   #        limits:
@@ -24,20 +24,20 @@ services:
     depends_on:
       - haproxy
     environment:
-      HOST_URL: http://haproxy/sensor/add
+      HOST_URL: http://web/sensor/add
       TZ: "America/Montreal"
     volumes:
       - ./config/iot/:/app/config/  # replace the config file
       - ./iot_results/:/app/run/    # see results
 
-  haproxy:
-    image: dockercloud/haproxy:latest
-    depends_on:
-      - web
-    ports:
-      - "8086:80"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+#  haproxy:
+#    image: dockercloud/haproxy:latest
+#    depends_on:
+#      - web
+#    ports:
+#      - "8086:80"
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
 
   db:
     image: mongo:3-xenial
