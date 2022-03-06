@@ -70,20 +70,20 @@ class Simulator:
     async def run(self):
         logger.info("Simulator started.")
         self._running = True
-        i: int = 1
+        step: int = 1
         while not self._schedule.empty():
             start_time = time.time()
 
             piece: SchedulePiece = self._schedule.get()
-            logger.info(f"Schedule {i}: [sensors:{piece.sensors_count}, time:{piece.time}]")
+            logger.info(f"Schedule {step}: [sensors:{piece.sensors_count}, time:{piece.time}]")
 
             if self.current_sensors < piece.sensors_count:
                 self._deploy_sensors(piece.sensors_count - self.current_sensors)
             elif self.current_sensors > piece.sensors_count:
                 self._remove_sensors(self.current_sensors - piece.sensors_count)
 
-            logger.info(f"Schedule {i}: [current_sensors:{self.current_sensors}]")
-
+            logger.info(f"Schedule {step}: [current_sensors:{self.current_sensors}]")
+            step += 1
             wait_time: float = piece.time - (time.time() - start_time)
             await asyncio.sleep(wait_time)
         self._remove_sensors(self.current_sensors)

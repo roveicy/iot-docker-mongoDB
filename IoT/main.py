@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import pathlib
 import time
 
@@ -54,7 +55,7 @@ async def main() -> None:
     metric_generator: MetricGenerator
     if total_config['metrics']['method'] == 'file':
         output_file_path: pathlib.Path = pathlib.Path('run/metrics.csv')
-        metric_generator = FileMetricGenerator(Sensor.result_queue, output_file_path)
+        metric_generator = FileMetricGenerator(Sensor.result_queue, datetime.timedelta(minutes=1), output_file_path)
     else:
         raise NotImplementedError(f'metric generation method {total_config["metric"]["method"]} not supported.')
 
