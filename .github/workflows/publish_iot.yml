@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - refactor
-#    paths:#todo: fix later
-#      - 'IoT/'
+    paths:
+      - 'IoT/**'
 jobs:
   publish-iot-image:
     runs-on: ubuntu-latest
