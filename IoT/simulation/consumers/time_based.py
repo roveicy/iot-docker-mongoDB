@@ -56,6 +56,8 @@ class TimeBasedMetricsGenerator(MetricGenerator, ABC):
         self._succeeded_requests = 0
         self._cumulative_response_time = 0
         self._cumulative_sensor_count = 0
+        self._first_sending_timestamp = None
+        self._last_sending_timestamp = None
 
     @abc.abstractmethod
     async def _send_metrics(self, first_sending_time: datetime.datetime, last_sending_time: datetime.datetime,
