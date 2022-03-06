@@ -26,6 +26,7 @@ services:
     environment:
       HOST_URL: http://web/sensor/add
       TZ: "America/Montreal"
+      IOT_LOG_LEVEL: 10 # debug
     volumes:
       - ./config/iot/:/app/config/  # replace the config file
       - ./iot_results/:/app/run/    # see results
