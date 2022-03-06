@@ -24,7 +24,7 @@ services:
     depends_on:
       - web
     environment:
-      HOST_URL: http://web/sensor/add
+      HOST_URL: http://web:5000/sensor/add
       TZ: "America/Montreal"
       IOT_LOG_LEVEL: 10 # debug
     volumes:
