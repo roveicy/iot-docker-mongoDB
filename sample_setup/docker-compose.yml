@@ -6,6 +6,8 @@ services:
     pull_policy: always
     depends_on:
       - db
+    sysctls:
+      net.core.somaxconn: 30000
     environment:
       TZ: "America/Montreal"
       UWSGI_CHEAPER: 0
@@ -16,9 +18,6 @@ services:
 #      resources:
 #        limits:
 #          cpus: 1.0
-#    sysctls:
-#      net.core.somaxconn: 30000
-
   iot:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
     pull_policy: always
