@@ -22,7 +22,7 @@ services:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
     pull_policy: always
     depends_on:
-      - haproxy
+      - web
     environment:
       HOST_URL: http://web/sensor/add
       TZ: "America/Montreal"
