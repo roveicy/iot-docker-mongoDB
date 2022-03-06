@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 import json
 import hashlib
 
-from db import MongoManager, DBManager
+from .db import MongoManager, DBManager
 
 app = Flask(__name__)
 
