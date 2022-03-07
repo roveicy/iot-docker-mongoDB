@@ -6,12 +6,16 @@ services:
     pull_policy: always
     depends_on:
       - db
+    expose:
+      - "5000"
     sysctls:
       net.core.somaxconn: 30000
     environment:
       TZ: "America/Montreal"
       WEB_WORKLOAD_CONFIG_MONGODB_USERNAME: root
       WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
+      VIRTUAL_HOST: web.local
+      VIRTUAL_PORT: 5000
   #    deploy:
   #      resources:
   #        limits:
@@ -21,6 +25,7 @@ services:
     pull_policy: always
     depends_on:
       - web
+      - nginx-proxy
     environment:
       HOST_URL: http://web:5000/sensor/add
       TZ: "America/Montreal"
@@ -31,8 +36,8 @@ services:
 
   nginx-proxy:
     image: nginxproxy/nginx-proxy
-    ports:
-      - "80:80"
+    depends_on:
+      - web
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
@@ -41,8 +46,7 @@ services:
     expose:
       - "8000"
     environment:
-      - VIRTUAL_HOST=whoami.local
-      - VIRTUAL_PORT=8000
+
 
 #  haproxy:
 #    image: dockercloud/haproxy:latest
