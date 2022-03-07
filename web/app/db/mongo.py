@@ -33,7 +33,7 @@ class MongoManager(DBManager):
         :return: if operation was successful
         """
         try:
-            self._collection.insert({
+            self._collection.insert_one({
                 "device": record["dev_id"],
                 "ts": record["ts"],
                 "seq": record["seq_no"],
