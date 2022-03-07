@@ -41,12 +41,6 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  whoami:
-    image: jwilder/whoami
-    expose:
-      - "8000"
-    environment:
-
 
 #  haproxy:
 #    image: dockercloud/haproxy:latest
