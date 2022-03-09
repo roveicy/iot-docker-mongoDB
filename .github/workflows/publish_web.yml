@@ -3,7 +3,7 @@ name: publish_web
 on:
   push:
     branches:
-      - refactor
+      - master
     paths:
       - 'web/**'
 jobs:

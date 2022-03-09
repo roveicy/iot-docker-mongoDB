@@ -3,7 +3,7 @@ name: publish_iot
 on:
   push:
     branches:
-      - refactor
+      - master
     paths:
       - 'IoT/**'
 jobs:
