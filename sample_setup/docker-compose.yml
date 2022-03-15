@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+  # application
   web:
     image: ghcr.io/nimaafshar/workload-generator-web:latest
     pull_policy: always
@@ -16,10 +17,10 @@ services:
       WEB_WORKLOAD_CONFIG_MONGODB_PASSWORD: password
       VIRTUAL_HOST: web.local
       VIRTUAL_PORT: 5000
-  #    deploy:
-  #      resources:
-  #        limits:
-  #          cpus: 1.0
+    deploy:
+      resources:
+        limits:
+          cpus: 1.0
   iot:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
     pull_policy: always
@@ -29,7 +30,7 @@ services:
     environment:
       HOST_URL: http://web:5000/sensor/add
       TZ: "America/Montreal"
-      IOT_LOG_LEVEL: 10 # debug
+      IOT_LOG_LEVEL: 20 # info
     volumes:
       - ./config/iot/:/app/config/  # replace the config file
       - ./iot_results/:/app/run/    # see results
@@ -41,112 +42,87 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-
-#  haproxy:
-#    image: dockercloud/haproxy:latest
-#    depends_on:
-#      - web
-#    ports:
-#      - "8086:80"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-
   db:
     image: mongo:3-xenial
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ~/mongodata/:/data/db:rw
-    #
-    #  dbmanager:
-    #    image: mongo-express
-    #    depends_on:
-    #      - db
-    #    links:
-    #      - db
-    #    ports:
-    #      - "8081:8081"
-    #    environment:
-    #      ME_CONFIG_MONGODB_SERVER: db
-    #      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-    #      ME_CONFIG_MONGODB_ADMINPASSWORD: password
-    #
 
-    #
-    #  cadvisor:
-    #    image: gcr.io/google-containers/cadvisor:latest
-    #    container_name: cadvisor
-    #    ports:
-    #      - "8080:8080"
-    #    volumes:
-    #      - /:/rootfs:ro
-    #      - /var/run:/var/run:rw
-    #      - /sys:/sys:ro
-    #      - /var/lib/docker/:/var/lib/docker:ro
-    #    depends_on:
-    #      - redis
-    #
-    #  redis:
-    #    image: redis:latest
-    #    container_name: redis
-    #    ports:
-    #      - "6379:6379"
-    #
-    #  prometheus:
-    #    image: prom/prometheus:latest
-    #    container_name: prometheus
-    #    ports:
-    #      - "9090:9090"
-    #    command:
-    #      - --config.file=/etc/prometheus/prometheus.yml
-    #    volumes:
-    #      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    #    depends_on:
-    #      - cadvisor
-    #        - node-exporter
-    #
-    #  nginx:
-    #    build: ./nginx
-    #    ports:
-    #      - "80:80"
-    #    depends_on:
-    #      - grafana
-    #      - dbmanager
-    #      - prometheus
-    #
-    #  grafana:
-    #    image: grafana/grafana:7.3.6
-    #    volumes:
-    #      - grafana_volume:/var/lib/grafana
-    #    environment:
-    #      - "GF_SECURITY_ADMIN_USER=admin"
-    #      - "GF_SECURITY_ADMIN_PASSWORD=test12345"
-    #    ports:
-    #      - "3000:3000"
-    #    depends_on:
-    #      - prometheus
-    #
-    #  node-exporter:
-    #    image: prom/node-exporter:latest
-    #    container_name: node-exporter
-    #    restart: unless-stopped
-    #    volumes:
-    #      - /proc:/host/proc:ro
-    #      - /sys:/host/sys:ro
-    #      - /:/rootfs:ro
-    #    command:
-    #      - '--path.procfs=/host/proc'
-    #      - '--path.rootfs=/rootfs'
-    #      - '--path.sysfs=/host/sys'
-    #      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    #    expose:
-    #      - 9100
+  # monitoring setup
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    expose:
+      - "8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - redis
 
-    #volumes:
-    #  grafana_volume:
+  redis:
+    image: redis:latest
+    container_name: redis
+    expose:
+      - "6379"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    expose:
+      - "9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - cadvisor
+      - node-exporter
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - grafana
+      - prometheus
+
+  grafana:
+    image: grafana/grafana:7.3.6
+    volumes:
+      - grafana_volume:/var/lib/grafana
+    environment:
+      - "GF_SECURITY_ADMIN_USER=admin"
+      - "GF_SECURITY_ADMIN_PASSWORD=test12345"
+    expose:
+      - "3000"
+    depends_on:
+      - prometheus
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - "9100"
+
+volumes:
+  grafana_volume:
 
 
     
