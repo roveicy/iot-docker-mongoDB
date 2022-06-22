@@ -30,6 +30,8 @@ docker-compose build
 
 <br>* Start simulation
 <br>docker-compose create
+<br>docker-compose build
+<br> sudo ifconfig lo:0 172.16.123.1
 <br>docker-compose up -d
 <br>-- then the iot container will start the simulation after 10 seconds
 <br>Please note that you can scale the "web" container based on the load. You might use auto-scaling policies on the web container based on your applicaiton need. This will help the workload generator to avoid crashing.
